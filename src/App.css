@@ -1,38 +1,114 @@
-.App {
+html {
+  font-size: 15px;
+}
+
+.app-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.header-block {
+  display: flex;
+  flex-direction: row;
+  margin: 0 0.9rem;
+  margin-top: 0.8rem;
+  border-bottom: 1px solid rgb(239 239 239);
+  padding-bottom: 0.8rem;
+}
+
+.path-block {
+  display: flex;
+  flex: 1;
+  margin: 0.3rem 0;
+  align-items: center;
+}
+
+.path-icon {
+  background: #c4bebe;
+  border-radius: 0.7rem;
   text-align: center;
+  vertical-align: middle;
+  line-height: 1.3rem;
+  height: 1.4rem;
+  width: 1.4rem;
+  color: white;
+  font-weight: 900;
+  font-size: 0.9rem;
+  margin-right: 0.4rem;
+
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+.path-ele {
+  text-decoration: underline;
+  text-decoration-color: rgb(229 220 220);
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+.path-separator {
+  margin: 0 0.2rem;
+  color: rgb(229 220 220);
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+.search-result-block {
+  flex: 1;
+}
+
+.search-block {
+  display: flex;
+}
+
+.search-ele {
+  border-radius: 0.4rem;
+  border: 1px solid rgb(229 215 215);
+  padding: 0 0.5rem;
+  padding-left: 1.7rem;
+}
+
+.search-block svg {
+  position: absolute;
+  width: .8rem;
+  fill: #948a8a;
+  padding: .6rem .6rem;
+}
+
+.doc-block {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  padding: 1rem;
+  position: relative;
+  gap: 1rem;
+}
+
+.doc-ele {
+  padding: 1rem 1.2rem;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+  justify-content: flex-end;
+  gap: .5rem;
 }
 
-.App-link {
-  color: #61dafb;
+.doc-ele img {
+  max-height: 5rem;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.doc-name{
+  font-size: .8rem;
+  color: #464343;
+}
+
+.doc-create{
+  align-self: center;
+}
+
+.option-block{
+  display: flex;
+  flex-direction: column;
+  min-width: 4rem;
+  border: 1px solid #beb8b8;
+  position: absolute;
+}
+.option-block span{
+  padding: .4rem;
+  font-size: .8rem;
 }
