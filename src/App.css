@@ -103,12 +103,87 @@ html {
 
 .option-block{
   display: flex;
+
+}
+
+.doc-outside{
+  display: flex;
+}
+
+.doc-creation-block{
+  display: flex;
   flex-direction: column;
-  min-width: 4rem;
-  border: 1px solid #beb8b8;
-  position: absolute;
+  background-color: #fff;
 }
-.option-block span{
-  padding: .4rem;
+.doc-head-block{
+  display: flex;
+  flex-direction: row;
+  min-width: 15rem;
+}
+
+.doc-head-block h4{
+  flex: 1;
+  text-align: center;
+  font-size: 1rem;
+  font-weight: 400;
+  margin: .6rem;
+}
+
+.doc-head-block span{
+  font-size: 1.5rem;
+}
+
+.doc-choose-block{
+  display: flex;
+  align-self: center;
+  margin-top: .8rem;
+  min-width: 8rem;
+  border-radius: 2px;
+}
+
+.doc-choose-block span{
   font-size: .8rem;
+  flex: 1;
+  text-align: center;
+  vertical-align: middle;
+  height: 1.7rem; 
+  line-height: 1.7rem; 
+  border: 1px solid rgb(211, 201, 201);
 }
+
+.doc-choose-block span:nth-child(1){
+  border-top-left-radius: .5rem ;
+  border-bottom-left-radius: .5rem ;
+}
+
+.doc-choose-block span:nth-child(2){
+  border-top-right-radius: .5rem ;
+  border-bottom-right-radius: .5rem ;
+  border-left: none ;
+}
+
+.doc-choose-block .active{
+  background: #4ab7ff;
+  border: none;
+}
+
+.doc-input-ele{
+  padding: .4rem;
+  border-radius: .5rem ;
+  border: 1px solid rgb(211, 201, 201);
+  margin-top: 1.5rem;
+}
+
+.doc-input-msg{
+  font-size: .6rem;
+  margin-left: .2rem;
+}
+
+.doc-create-btn{
+  margin-top: .8rem;
+  padding: .5rem;
+  border-radius: .5rem ;
+  background-color: #4ab7ff;
+  border: none;
+}
+

@@ -1,14 +1,45 @@
+import { Fragment, useMemo } from "react";
+import { usePathValue, usePathDispatch } from "../context/path.context";
 
 const Path = () => {
+    const { currentPath } = usePathValue();
+    const dispatch = usePathDispatch();
+
+    const dir = useMemo(() => {
+        if (!currentPath) return [".root"];
+        const temp = currentPath.split('/');
+        temp.unshift('.root');
+        return temp;
+    }, [currentPath])
+
+    const handleBackParent = () => {
+        if(currentPath){
+            const newPath = currentPath.split('/');
+            newPath.pop();
+            dispatch({ type: 'updateCurrentPath', value: newPath.join("/") })
+        }
+    }
+
     return (
         <section className="path-block" >
             {/* <span className="path-icon" >&#215;</span>
             <span  >Search Page: type atleast 1 character</span> */}
-            <span className="path-icon" >&#8593;</span>
-            <span className="path-ele" >.root</span>
-            <span className="path-separator" >/</span>
-            <span className="path-ele" >my folder</span>
-         </section>
+            <span className="path-icon"
+                onClick={Boolean(currentPath) ? handleBackParent : undefined}
+                disabled={Boolean(currentPath)} >&#8593;</span>
+            {dir.map((eachDir, i) => {
+                if (i === 0)
+                    return <span key={i} className="path-ele" >{eachDir}</span>
+                else {
+                    return (
+                        <Fragment key={i}>
+                            <span className="path-separator" >/</span>
+                            <span className="path-ele" >my folder</span>
+                        </Fragment>
+                    )
+                }
+            })}
+        </section>
     )
 }
 

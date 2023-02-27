@@ -1,32 +1,55 @@
 import file from '../asset/file.png';
 import folder from '../asset/folder.png';
-import AddIcon from '../asset/add_new_button.png';
+import { useCallback, useEffect } from 'react';
+import { OutSideClick } from './outSideClick';
+import useMenu from './useMenu';
+
+const Doc = ({ type, name, onOpenDir, dir }) => {
+    const { closeMenu, menuActive, handleContextMenu, contextMenu } = useMenu();
+
+    const onClickMenu = useCallback((menuItem) => {
+        console.log(menuItem);
+    }, []);
+
+    useEffect(() => {
+        contextMenu.current.setMenu([
+            {
+                label: "Copy",
+                click: onClickMenu
+            },
+            {
+                label: "Rename",
+                click: onClickMenu
+            },
+            {
+                label: "Delete",
+                click: onClickMenu
+            }
+        ]);
+    }, [onClickMenu, contextMenu]);
 
 
-const Menu = () => {
+    const onOutsideClick = () => {
+        closeMenu()
+    }
+
+    const openDir = () => {
+        onOpenDir(dir)
+    }
+
     return (
-        <section className='option-block' >
-            <span>copy</span>
-            <span>rename</span>
-            <span>delete</span>
-        </section>
+        <OutSideClick onClickOutside={onOutsideClick} active={menuActive} className="doc-outside" >
+            <section className='doc-ele'
+                onContextMenu={handleContextMenu}
+                onClick={type === "file" ? undefined : openDir}>
+                <img src={type === "file" ? file : folder} alt="Document" />
+                <span className='doc-name' >{name}</span>
+            </section>
+        </OutSideClick>
     )
 }
 
-export const Doc = ({ type }) => {
-    return (
-        <div className='doc-ele' >
-            <img src={type === "file" ? file : folder} alt="Document" />
-            <span className='doc-name' >sample.png</span>
-            {/* <Menu /> */}
-        </div>
-    )
-}
+export default Doc;
 
-export const CreateDoc = () => {
-    return (
-        <div className='doc-ele doc-create' >
-            <img src={AddIcon} alt="add-document" />
-        </div>
-    )
-}
+
+
