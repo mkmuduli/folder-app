@@ -13,8 +13,10 @@ const List = () => {
 
     const [modalType, setModalType] = useState();
 
+    const [editedDoc, setEditedDoc] = useState('');
+
     const docs = useMemo(() => {
-        if(search){
+        if (search) {
             return [];
         }
         const currentDir = getCurrentFolder(path, currentPath);
@@ -28,23 +30,44 @@ const List = () => {
         })
         return docs;
 
-    }, [currentPath, path]);
+    }, [currentPath, path, search]);
 
     const onAddDocNew = () => {
         setModalType("new");
     }
 
     const handleDocForm = (data) => {
-        dispatch({ type: 'add' })
+        return new Promise((resolve) => {
+            dispatch({
+                type: modalType === 'new' ? 'add' : 'update',
+                name: data.fileName,
+                fileType: data.fileType,
+                oldName: data.oldName,
+            })
+            setModalType(undefined);
+            if (modalType === 'edit') setEditedDoc('');
+            resolve();
+        })
+
     }
 
     const onClose = () => {
+        if (modalType === 'edit') setEditedDoc('');
         setModalType(undefined);
     }
 
     const onOpenFolder = (name) => {
-        const newPath = currentPath ? `${currentPath}/${name}` : name;
-        dispatch({ type: 'updateCurrentPath', value: newPath })
+        const newPath = search ? name : currentPath ? `${currentPath}/${name}` : name;
+        dispatch({ type: 'updateCurrentPath', value: newPath });
+    }
+
+    const handleDeleteDoc = (data) => {
+        dispatch({ ...data, type: 'delete' })
+    }
+
+    const handelEditDoc = (data) => {
+        setEditedDoc(data);
+        setModalType("edit");
     }
 
     return (
@@ -56,14 +79,17 @@ const List = () => {
                             type={eachDoc.type}
                             name={eachDoc.name}
                             dir={eachDoc.dir}
-                            onOpenDir={onOpenFolder} />)
+                            onOpenDir={onOpenFolder}
+                            onEditDoc={handelEditDoc}
+                            onDeleteDoc={handleDeleteDoc} />)
                 })}
-                <DocCreation onCreate={onAddDocNew} />
+                {!search ? <DocCreation onCreate={onAddDocNew} /> : false}
             </section>
 
             <DocForm type={modalType}
-                onAction={handleDocForm}
-                onClose={onClose} />
+                onSubmit={handleDocForm}
+                onClose={onClose}
+                fileData={editedDoc} />
         </>
     )
 }

@@ -10,6 +10,7 @@ const PathContext = ({ children }) => {
     const [state, dispatch] = useReducer(pathReducer, {
         path: {
             dir1: {},
+            // eslint-disable-next-line 
             ['file.js']: false,
         },
         currentPath: null,

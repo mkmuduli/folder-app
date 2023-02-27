@@ -1,13 +1,13 @@
 import '@axframe/contextmenu/dist/style.css';
 import { ContextMenu } from "@axframe/contextmenu";
-import { useRef, useState, useCallback } from 'react';
+import { useRef, useState, useCallback, useEffect } from 'react';
 
 const useMenu = () => {
 
     const contextMenu = useRef(
         new ContextMenu({
             id: "basic",
-            style: { fontSize: "12px", minWidth: "100px", backgroundColor: '#fff' }
+            style: { fontSize: "12px", minWidth: "100px", backgroundColor: '#fff' },
         })
     );
 
@@ -29,7 +29,23 @@ const useMenu = () => {
         }, []
     );
 
-    return { handleContextMenu, menuActive, closeMenu, contextMenu }
+    useEffect(() => {
+        const handleClickOutside = (event) => {
+            const ele = document.querySelectorAll(`[data-rf-contextmenu-container]`);
+           
+            if (ele && ele && !ele[0].contains(event.target)) {
+                closeMenu()
+            }
+        };
+        if (menuActive) {
+            document.addEventListener('click', handleClickOutside, true);
+            return () => {
+                document.removeEventListener('click', handleClickOutside, true);
+            };
+        }
+    }, [menuActive, closeMenu]);
+
+    return { handleContextMenu, contextMenu }
 }
 
 export default useMenu;

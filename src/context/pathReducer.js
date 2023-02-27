@@ -1,7 +1,7 @@
 import produce from "immer";
 
 export const getCurrentFolder = (path, currentPath) => {
-    if(!currentPath) return path;
+    if (!currentPath) return path;
     const dir = currentPath.split("/");
     let currentDir = path;
     dir.forEach((eachDir) => {
@@ -10,32 +10,33 @@ export const getCurrentFolder = (path, currentPath) => {
     return currentDir;
 }
 
-
-export function pathReducer(path, action) {
+export function pathReducer(state, action) {
     switch (action.type) {
         case 'add': {
-            return produce(path, draftState => {
+            return produce(state, draftState => {
                 const currentDir = getCurrentFolder(draftState.path, action.currentPath);
-                currentDir[action.name] = action.type === 'file' ? false : {};
+                currentDir[action.name] = action.fileType === 'file' ? false : {};
             })
         }
         case 'update': {
-            return produce(path, draftState => {
+            console.log(action)
+            return produce(state, draftState => {
                 const currentDir = getCurrentFolder(draftState.path, action.currentPath);
-                currentDir[action.oldName] = action.name;
-            })
-        }
-        case 'delete': {
-            return produce(path, draftState => {
-                const currentDir = getCurrentFolder(draftState.path, action.currentPath);
+                currentDir[action.name] = currentDir[action.oldName];
                 delete currentDir[action.oldName];
             })
         }
+        case 'delete': {
+            return produce(state, draftState => {
+                const currentDir = getCurrentFolder(draftState.path, action.currentPath);
+                delete currentDir[action.name];
+            })
+        }
         case 'updateCurrentPath': {
-            return produce(path, draftState => {
+            return produce(state, draftState => {
                 draftState.currentPath = action.value;
             })
         }
+        default: throw Error('Unknown action: ' + action.type);
     }
-    throw Error('Unknown action: ' + action.type);
 }
