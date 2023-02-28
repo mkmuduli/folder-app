@@ -4,27 +4,29 @@ import Modal from "./Modal";
 const CardForm = ({ type, onClose, onSubmit, fileData }) => {
     const [fileName, setFileName] = useState('');
     const [fileType, setFileType] = useState('file');
+    const [isExits, setIsExits] = useState(false);
 
     const handleChange = (e) => {
         setFileName(e.target.value)
     }
 
     const handelSubmit = () => {
+        setIsExits(false);
         onSubmit({
             fileName,
             fileType,
             oldName: fileData?.name
-        }).then(()=>{
+        }).then(() => {
             setFileName("")
-        }).catch((err)=>{
-            console.log(err);
+        }).catch(() => {
+            setIsExits(true);
         })
     }
 
-    useEffect(()=>{
-        if(fileData?.name) setFileName(fileData.name);
-        if(fileData?.type) setFileType(fileData.type);
-    },[fileData])
+    useEffect(() => {
+        if (fileData?.name) setFileName(fileData.name);
+        if (fileData?.type) setFileType(fileData.type);
+    }, [fileData])
 
 
     return (
@@ -39,7 +41,7 @@ const CardForm = ({ type, onClose, onSubmit, fileData }) => {
                     <span className={fileType === 'folder' ? 'active' : ''} onClick={() => setFileType('folder')} >Folder</span>
                 </div>
                 <input className="doc-input-ele" value={fileName} onChange={handleChange} />
-                {/* <span className="doc-input-msg" >file/folder already exits</span> */}
+                {isExits? <span className="doc-input-msg" >file/folder already exits</span> :false}
                 <button className="doc-create-btn" onClick={handelSubmit} >Submit</button>
             </section>
         </Modal>

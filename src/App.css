@@ -177,6 +177,7 @@ html {
 .doc-input-msg{
   font-size: .6rem;
   margin-left: .2rem;
+  color: red;
 }
 
 .doc-create-btn{

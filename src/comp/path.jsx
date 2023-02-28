@@ -24,6 +24,19 @@ const Path = () => {
         dispatch({ type: 'updateSearch', value: '' });
     }
 
+    const handlePathClick = (index) => {
+        let newPath = "";
+        if (index !== 0) {
+            const dir = currentPath.split('/');
+            let i = 0;
+            while (i < index) {
+                newPath += `${newPath? '/':''}${dir[i]}`;
+                i++;
+            }
+        }
+        dispatch({ type: 'updateCurrentPath', value: newPath })
+    }
+
     return (
         <section className="path-block" >
             {search ?
@@ -37,12 +50,14 @@ const Path = () => {
                         disabled={Boolean(currentPath)} >&#8593;</span>
                     {dir.map((eachDir, i) => {
                         if (i === 0)
-                            return <span key={i} className="path-ele" >{eachDir}</span>
+                            return <span key={i}
+                                onClick={() => handlePathClick(i)}
+                                className="path-ele" >{eachDir}</span>
                         else {
                             return (
-                                <Fragment key={i}>
+                                <Fragment key={i} >
                                     <span className="path-separator" >/</span>
-                                    <span className="path-ele" >{eachDir}</span>
+                                    <span onClick={() => handlePathClick(i)} className="path-ele" >{eachDir}</span>
                                 </Fragment>
                             )
                         }
