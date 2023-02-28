@@ -1,14 +1,6 @@
 import produce from "immer";
+import { getCurrentFolder } from "../util/folderUtil";
 
-export const getCurrentFolder = (path, currentPath) => {
-    if (!currentPath) return path;
-    const dir = currentPath.split("/");
-    let currentDir = path;
-    dir.forEach((eachDir) => {
-        currentDir = currentDir[eachDir];
-    })
-    return currentDir;
-}
 
 export function pathReducer(state, action) {
     switch (action.type) {
@@ -19,7 +11,6 @@ export function pathReducer(state, action) {
             })
         }
         case 'update': {
-            console.log(action)
             return produce(state, draftState => {
                 const currentDir = getCurrentFolder(draftState.path, action.currentPath);
                 currentDir[action.name] = currentDir[action.oldName];
@@ -35,6 +26,11 @@ export function pathReducer(state, action) {
         case 'updateCurrentPath': {
             return produce(state, draftState => {
                 draftState.currentPath = action.value;
+            })
+        }
+        case 'updateSearch': {
+            return produce(state, draftState => {
+                draftState.search = action.value;
             })
         }
         default: throw Error('Unknown action: ' + action.type);

@@ -1,6 +1,6 @@
 import { useMemo, useState } from "react";
 import { usePathDispatch, usePathValue } from "../context/path.context";
-import { getCurrentFolder } from "../context/pathReducer";
+import { getCurrentFolder, getSearchDoc } from "../util/folderUtil";
 import DocForm from "./cardForm";
 import Doc from "./doc";
 import DocCreation from "./docCreation";
@@ -17,7 +17,7 @@ const List = () => {
 
     const docs = useMemo(() => {
         if (search) {
-            return [];
+            return getSearchDoc(path,search);
         }
         const currentDir = getCurrentFolder(path, currentPath);
 
@@ -25,7 +25,7 @@ const List = () => {
             return {
                 name: eachDoc,
                 type: currentDir[eachDoc] ? 'folder' : 'file',
-                dir: eachDoc,
+                dir: undefined,
             }
         })
         return docs;
@@ -37,12 +37,21 @@ const List = () => {
     }
 
     const handleDocForm = (data) => {
-        return new Promise((resolve) => {
+        return new Promise((resolve,reject) => {
+            const nowCurrentPath = editedDoc.dir || currentPath
+            const currentDir = getCurrentFolder(path, nowCurrentPath);
+
+            if(currentDir[data.fileName]){
+                reject("exits");
+                return;
+            }
+
             dispatch({
                 type: modalType === 'new' ? 'add' : 'update',
                 name: data.fileName,
                 fileType: data.fileType,
                 oldName: data.oldName,
+                currentPath: nowCurrentPath,
             })
             setModalType(undefined);
             if (modalType === 'edit') setEditedDoc('');
@@ -56,13 +65,14 @@ const List = () => {
         setModalType(undefined);
     }
 
-    const onOpenFolder = (name) => {
-        const newPath = search ? name : currentPath ? `${currentPath}/${name}` : name;
+    const onOpenFolder = (nextDir) => {
+        const newPath = search ? nextDir : currentPath ? `${currentPath}/${nextDir}` : nextDir;
         dispatch({ type: 'updateCurrentPath', value: newPath });
+        dispatch({ type: 'updateSearch', value: '' });
     }
 
     const handleDeleteDoc = (data) => {
-        dispatch({ ...data, type: 'delete' })
+        dispatch({ ...data, type: 'delete', currentPath: data.dir || currentPath })
     }
 
     const handelEditDoc = (data) => {

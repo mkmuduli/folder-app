@@ -13,7 +13,7 @@ const PathContext = ({ children }) => {
             // eslint-disable-next-line 
             ['file.js']: false,
         },
-        currentPath: null,
+        currentPath: "",
         search: '',
     });
 

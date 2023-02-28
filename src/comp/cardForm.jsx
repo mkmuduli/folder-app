@@ -14,6 +14,10 @@ const CardForm = ({ type, onClose, onSubmit, fileData }) => {
             fileName,
             fileType,
             oldName: fileData?.name
+        }).then(()=>{
+            setFileName("")
+        }).catch((err)=>{
+            console.log(err);
         })
     }
 

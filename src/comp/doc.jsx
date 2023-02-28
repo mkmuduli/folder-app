@@ -40,7 +40,7 @@ const Doc = ({ type, name, onOpenDir, dir, onEditDoc, onDeleteDoc }) => {
 
 
     const openDir = () => {
-        onOpenDir(dir)
+        onOpenDir(dir? `${dir}/${name}`: name)
     }
 
     return (
